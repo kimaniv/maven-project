@@ -4,7 +4,8 @@ pipeline {
   stages {
     stage('Build'){
       steps {
-        sh 'mvn clean package'
+        // Because I'm too lazy to set a path parameter...
+        sh '/usr/local/bin/mvn clean package'
       }
 
       post {
