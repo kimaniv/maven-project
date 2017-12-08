@@ -18,7 +18,7 @@ pipeline {
 
     stage ('Deploy to Staging'){
       steps {
-        build job: 'Deploy-to-staging'
+        build job: 'deploy-to-staging'
       }
     }
     
@@ -29,7 +29,7 @@ pipeline {
         }
 
         //This builds and deploys to prod if someone hits yes
-        build job: 'Deploy-to-Prod'
+        build job: 'deploy-to-prod'
       }
 
       // In response to the build
