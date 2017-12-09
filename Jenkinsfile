@@ -7,6 +7,7 @@ pipeline {
     string(name: 'tomcat_prod', defaultValue: '54.86.137.53', description: 'Tomcat prod environment')
   }
 
+  //This trigger polls to see if any changes have been made
   triggers {
     //Cron here
     pollSCM('* * * * *')
