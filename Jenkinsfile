@@ -12,18 +12,32 @@ pipeline {
     pollSCM('* * * * *')
   }
 
-  stages ('Deployments'){
-    //Allow for parallel running of these
-    parallel{
-      stage ('Deploy to Staging'){
-        steps {
-          sh "scp -i /Users/edwardxie/.ssh/MyNVKeyPair.pem **/target/*.war ec2-user@${tomcat_dev}:/var/lib/tomcat7/webapps"
+  stages {
+    stage ('Build'){
+      steps {
+        sh 'mvn clean package'
+      }
+      post {
+        success {
+          echo 'Now Archiving...'
+          archiveArtifacts artifacts: '**/target/*.war'
         }
       }
+    }
+    
+    stage ('Deployments'){
+      //Allow for parallel running of these
+      parallel{
+        stage ('Deploy to Staging'){
+          steps {
+            sh "scp -i /Users/edwardxie/.ssh/MyNVKeyPair.pem **/target/*.war ec2-user@${tomcat_dev}:/var/lib/tomcat7/webapps"
+          }
+        }
 
-      stage ('Deploy to Production'){
-        steps {
-          sh "scp -i /users/edwardxie/.ssh/MyNVKeyPair.pem **/target/*.war ec2-user@${tomcat_prod}:/var/lib/tomcat7/webapps"
+        stage ('Deploy to Production'){
+          steps {
+            sh "scp -i /users/edwardxie/.ssh/MyNVKeyPair.pem **/target/*.war ec2-user@${tomcat_prod}:/var/lib/tomcat7/webapps"
+          }
         }
       }
     }
