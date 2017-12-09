@@ -12,7 +12,7 @@ pipeline {
     pollSCM('* * * * *')
   }
 
-  stage ('Deployments'){
+  stages ('Deployments'){
     //Allow for parallel running of these
     parallel{
       stage ('Deploy to Staging'){
